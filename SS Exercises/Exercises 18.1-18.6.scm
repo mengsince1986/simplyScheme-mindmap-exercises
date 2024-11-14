@@ -49,17 +49,25 @@
 
 ; 18.3 Write depth, a procedure that takes a tree as argument and returns the largest number of nodes connected through parent-child links. That is, a leaf node has depth 1; a tree in which all the children of the root node are leaves has depth 2. Our world tree has depth 4 (because the longest path from the root to a leaf is, for example, world, country, state, city).
 
-; solution:
-(define (depth tree)
-  (if (null? tree)
-      0
-      (depth-helper (children tree))))
+; wrong solution:
+;; (define (depth tree)
+;;   (if (null? tree)
+;;       0
+;;       (depth-helper (children tree))))
 
-(define (depth-helper tree-children)
-  (if (null? tree-children)
-      1
-      (+ (depth (car tree-children))
-         (depth-helper (cdr tree-children)))))
+;; (define (depth-helper tree-children)
+;;   (if (null? tree-children)
+;;       1
+;;       (+ (depth (car tree-children))
+;;          (depth-helper (cdr tree-children)))))
+
+; right solution
+(define (depth node)
+  (cond ((null? (children node)) 1)               ; base case: if node is a leaf
+        (else                                     ; otherwise node has children
+         (+ 1                                     ; add one
+            (apply max                            ; to the maximum of
+                   (map depth (children node))))))) ; the recursive call
 
 ; **********************************************************
 
